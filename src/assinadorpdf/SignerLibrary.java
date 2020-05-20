@@ -94,12 +94,12 @@ public class SignerLibrary {
      *
      * @throws DocumentSignException
      */
-    public byte[] inicializar(String filename, byte[] file, String certname, String pin, Boolean finalizarDocumento) throws DocumentSignException {
+    public byte[] inicializar(String filename, byte[] file, String certname, String pin, Boolean finalizarDocumento, String caminhoArquivo) throws DocumentSignException {
         try {
             System.out.println("Iniciando Assinador");
             this.file = file;
             //this.cert = cert;
-            byte[] retorno = signButton_actionPerformed(filename, certname, pin, finalizarDocumento);
+            byte[] retorno = signButton_actionPerformed(filename, certname, pin, finalizarDocumento, caminhoArquivo);
             System.out.println("Saindo do Assinador");
             return retorno;
         } catch (Exception e1) {
@@ -107,13 +107,13 @@ public class SignerLibrary {
         }
     }
 
-    private byte[] signButton_actionPerformed(String filename, String certname, String pin, Boolean finalizarDocumento) throws DocumentSignException {
+    private byte[] signButton_actionPerformed(String filename, String certname, String pin, Boolean finalizarDocumento, String caminhoArquivo) throws DocumentSignException {
         mResult = true;
-        return signFile(filename, certname, pin, finalizarDocumento);
+        return signFile(filename, certname, pin, finalizarDocumento, caminhoArquivo);
 
     }
 
-    private byte[] signFile(String aFileName, String certname, String pin, Boolean finalizarDocumento) throws DocumentSignException {
+    private byte[] signFile(String aFileName, String certname, String pin, Boolean finalizarDocumento, String caminhoArquivo) throws DocumentSignException {
 
         // Load the file for signing
         String pinCode = "";
@@ -123,14 +123,14 @@ public class SignerLibrary {
         }
 
         try {
-            return signDocument(aFileName, certname, pinCode, finalizarDocumento);
+            return signDocument(aFileName, certname, pinCode, finalizarDocumento, caminhoArquivo);
         } catch (Exception e) {
             throw new DocumentSignException(e.getMessage());
         }
 
     }
 
-    private byte[] signDocument(String aFileName, String certname, String aPinCode, Boolean finalizarDocumento) throws DocumentSignException, DocumentException, IOException {
+    private byte[] signDocument(String aFileName, String certname, String aPinCode, Boolean finalizarDocumento, String caminhoArquivo) throws DocumentSignException, DocumentException, IOException {
         // Load the keystore from the smart card using the specified PIN code
         extractCertificateInformation(certname, aPinCode);
         PdfReader reader = null; // responsável por criar o documento PDF e as áreas de assinatura
@@ -195,7 +195,7 @@ public class SignerLibrary {
             byte[] buffer = new byte[fis.available()];
             fis.read(buffer);
             
-            File targetFile = new File("C:\\arquivos\\targetFile.pdf");
+            File targetFile = new File(caminhoArquivo + "targetFile.pdf");
             OutputStream outStream = new FileOutputStream(targetFile);
             outStream.write(buffer);
             

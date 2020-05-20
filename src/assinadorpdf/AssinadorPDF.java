@@ -19,16 +19,17 @@ public class AssinadorPDF {
      */
     public static void main(String[] args) throws DocumentSignException, Exception {
         SignerLibrary a = new SignerLibrary();
-        String caminhoArquivo = "C:\\arquivos\\teste.pdf";
+        String caminhoArquivo = "C:\\arquivos\\";
+        String nomeArquivo = "teste.pdf";
         String caminhoDriverDLL = "C:\\Windows\\System32\\aetpksse.dll";
         String senhaCard = "1234";
         Boolean finalizaDocumento = Boolean.TRUE;
         
-        File file = new File(caminhoArquivo);
+        File file = new File(caminhoArquivo + nomeArquivo);
         
         byte[] f = Files.readAllBytes(file.toPath());
         
-        a.inicializar(caminhoArquivo, f, caminhoDriverDLL , senhaCard, finalizaDocumento);
+        a.inicializar(caminhoArquivo + nomeArquivo, f, caminhoDriverDLL , senhaCard, finalizaDocumento, caminhoArquivo);
     }
     
 }
